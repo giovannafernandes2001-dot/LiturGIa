@@ -97,7 +97,7 @@ function flowBody(s){
  return '';
 }
 function wireFlow(s){
- if(s.type==='breath0')startPacer({inhale:5,exhale:5});
+ if(s.type==='breath0')startPacer({inhale:3,exhale:3});
  if(s.type==='breath'){startBreath('coer');$$('#flowBody [data-bmode]').forEach(b=>b.onclick=()=>{$$('#flowBody [data-bmode]').forEach(x=>x.classList.remove('on'));b.classList.add('on');startBreath(b.dataset.bmode)})}
  if(s.type==='aff'||s.type==='decl'){var sp=$('#fspeak');if(sp)sp.onclick=()=>speak(s.type==='aff'?dailyAffObj(selDate).text:dailyDecl(selDate).text.map(tcase).join(' '))}
  if(s.type==='timer'){setTimer(5);toggleTimer();$$('#flowBody [data-fmin]').forEach(b=>b.onclick=()=>{$$('#flowBody [data-fmin]').forEach(x=>x.classList.remove('on'));b.classList.add('on');setTimer(+b.dataset.fmin);toggleTimer()});var tg=$('#ftoggle');if(tg)tg.onclick=toggleTimer}
