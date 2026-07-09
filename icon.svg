@@ -1,1 +1,1 @@
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='112' fill='#fbf8f4'/><rect x='76' y='76' width='360' height='360' rx='76' fill='#72806a'/><text x='256' y='283' text-anchor='middle' font-size='120' font-family='Georgia,serif' fill='#fff'>GI</text></svg>
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='112' fill='#fbf8f4'/><path d='M256 74 L289 223 L438 256 L289 289 L256 438 L223 289 L74 256 L223 223 Z' fill='#8f5c56'/></svg>
