@@ -43,7 +43,7 @@ body.immersive .app{padding-bottom:22px}
 .chapterLine{font-family:Georgia,serif;font-style:italic;color:var(--muted);font-size:15.5px;line-height:1.6;margin-bottom:28px;max-width:440px}
 .chapterContinue{margin-top:26px;font-size:13px;font-weight:600;color:var(--ink);display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0 18px 0 6px;margin-left:-6px}
 .chapterContinue span{color:var(--rose)}
-.chapterContinue:active{opacity:.6}
+.chapterContinue:active{opacity:.6}.chapterNavRow{display:flex;align-items:center;gap:16px;margin-top:26px}.chapterNavRow .chapterContinue{margin-top:0;margin-left:auto}.chapterBack{font-size:13px;font-weight:600;color:var(--muted);display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0 6px 0 0}.chapterBack:active{opacity:.6}
 .chapterClose{margin-top:20px;font-size:12px;font-weight:600;color:var(--muted)}
 .chapterReview{padding:6px 0 30px}
 [id^="liturgyBlock"]{scroll-margin-top:120px}
@@ -213,7 +213,7 @@ box.innerHTML=(summary?'<p class="liturgyPreviewSummary">'+esc(summary)+'</p>':'
 var btn=$('#liturgyEnter');if(btn)btn.onclick=function(){if(done)revisitIdx=1;state.liturgyEntered[selDate]=true;delete state.paused[selDate];save();renderHome();window.scrollTo({top:0,behavior:'smooth'})}}
 function renderLiturgiaEmAndamento(box){var fp=(state.flowProgress||{})[selDate];var next=homeNextIdx();var html='';
 [1,2,3,4,5,6,7,8,9].forEach(function(i){var isDone=fp!==undefined&&i<=fp;var isCurrent=i===next&&!isDone;var s=FLOW[i];
-if(isCurrent){html+='<div class="chapterCurrent" id="liturgyBlock'+i+'"><div class="chapterProgress">Passo '+i+' de 9</div><div class="chapterNumeral">'+toRoman(i)+'</div><div class="chapterTitle">'+esc(s.title)+'</div><div class="chapterLine">'+esc(s.line)+'</div><div>'+(i===1?corpoChecklistHTML():flowBodyChapter(s))+'</div><button class="chapterContinue" data-conclude="'+i+'">Continuar <span aria-hidden="true">→</span></button></div>'}
+if(isCurrent){html+='<div class="chapterCurrent" id="liturgyBlock'+i+'"><div class="chapterProgress">Passo '+i+' de 9</div><div class="chapterNumeral">'+toRoman(i)+'</div><div class="chapterTitle">'+esc(s.title)+'</div><div class="chapterLine">'+esc(s.line)+'</div><div>'+(i===1?corpoChecklistHTML():flowBodyChapter(s))+'</div><div class="chapterNavRow">'+(i>1?'<button class="chapterBack" data-back="'+i+'">← Voltar</button>':'')+'<button class="chapterContinue" data-conclude="'+i+'">Continuar <span aria-hidden="true">→</span></button></div></div>'}
 else if(isDone){html+='<button class="chapterRow done" data-row="'+i+'"><span class="liturgyMark">✓</span><span class="chapterRoman">'+toRoman(i)+'</span><span class="chapterLabel">'+esc(s.kicker)+'</span></button><div class="chapterReview" id="liturgyBlock'+i+'" hidden><div class="chapterTitle" style="font-size:26px">'+esc(s.title)+'</div>'+(i===1?corpoChecklistHTML(true):flowBodyChapter(s))+'<div class="chapterClose" data-close="'+i+'">Fechar</div></div>'}
 else{html+='<div class="chapterRow locked"><span class="liturgyMark">○</span><span class="chapterRoman">'+toRoman(i)+'</span><span class="chapterLabel">'+esc(s.kicker)+'</span></div>'}
 });
@@ -223,7 +223,7 @@ wireReviewRows();
 wireConcludeButtons()}
 function renderLiturgiaRevisit(box){var html='';
 [1,2,3,4,5,6,7,8,9].forEach(function(i){var isPast=i<revisitIdx;var isCurrent=i===revisitIdx;var s=FLOW[i];
-if(isCurrent){html+='<div class="chapterCurrent" id="liturgyBlock'+i+'"><div class="chapterProgress">Passo '+i+' de 9</div><div class="chapterNumeral">'+toRoman(i)+'</div><div class="chapterTitle">'+esc(s.title)+'</div><div class="chapterLine">'+esc(s.line)+'</div><div>'+(i===1?corpoChecklistHTML(true):flowBodyChapter(s))+'</div><button class="chapterContinue" data-conclude="'+i+'">Continuar <span aria-hidden="true">→</span></button></div>'}
+if(isCurrent){html+='<div class="chapterCurrent" id="liturgyBlock'+i+'"><div class="chapterProgress">Passo '+i+' de 9</div><div class="chapterNumeral">'+toRoman(i)+'</div><div class="chapterTitle">'+esc(s.title)+'</div><div class="chapterLine">'+esc(s.line)+'</div><div>'+(i===1?corpoChecklistHTML(true):flowBodyChapter(s))+'</div><div class="chapterNavRow">'+(i>1?'<button class="chapterBack" data-back="'+i+'">← Voltar</button>':'')+'<button class="chapterContinue" data-conclude="'+i+'">Continuar <span aria-hidden="true">→</span></button></div></div>'}
 else if(isPast){html+='<button class="chapterRow done" data-row="'+i+'"><span class="liturgyMark">✓</span><span class="chapterRoman">'+toRoman(i)+'</span><span class="chapterLabel">'+esc(s.kicker)+'</span></button><div class="chapterReview" id="liturgyBlock'+i+'" hidden><div class="chapterTitle" style="font-size:26px">'+esc(s.title)+'</div>'+(i===1?corpoChecklistHTML(true):flowBodyChapter(s))+'<div class="chapterClose" data-close="'+i+'">Fechar</div></div>'}
 else{html+='<div class="chapterRow locked"><span class="liturgyMark">✓</span><span class="chapterRoman">'+toRoman(i)+'</span><span class="chapterLabel">'+esc(s.kicker)+'</span></div>'}
 });
@@ -231,7 +231,7 @@ box.innerHTML=html;
 if(revisitIdx===1)wireCorpoChecklist();else if(FLOW[revisitIdx])wireFlow(FLOW[revisitIdx]);
 wireReviewRows();
 wireConcludeButtons()}
-function wireConcludeButtons(){$$('#liturgyAccordion [data-conclude]').forEach(function(b){b.onclick=function(){var i=+b.dataset.conclude;if(FLOW[i].type==='journal')saveFlowJournal();function advance(){if(liturgyDone()){revisitIdx=i+1;if(revisitIdx>9){delete state.liturgyEntered[selDate];save();showOrdoEnd();return}renderHome()}else{state.flowProgress=state.flowProgress||{};state.flowProgress[selDate]=i;delete state.paused[selDate];save();if(i>=9){state.days[selDate]=true;delete state.liturgyEntered[selDate];if(!state.log)state.log={};if(!(selDate in state.log)){state.log[selDate]=(state.progress||0);state.progress=(state.progress||0)+1}save();renderHome();showOrdoEnd();return}vibrate(8);renderHome()}var nb=$('#liturgyBlock'+(i+1));if(nb)setTimeout(function(){nb.scrollIntoView({behavior:'smooth',block:'start'})},60)}var curEl=$('#liturgyBlock'+i);if(curEl){stopPacer();stopTimer();curEl.classList.add('closing');setTimeout(advance,260)}else{advance()}}})}
+function wireConcludeButtons(){$$('#liturgyAccordion [data-conclude]').forEach(function(b){b.onclick=function(){var i=+b.dataset.conclude;if(FLOW[i].type==='journal')saveFlowJournal();function advance(){if(liturgyDone()){revisitIdx=i+1;if(revisitIdx>9){delete state.liturgyEntered[selDate];save();showOrdoEnd();return}renderHome()}else{state.flowProgress=state.flowProgress||{};state.flowProgress[selDate]=i;delete state.paused[selDate];save();if(i>=9){state.days[selDate]=true;delete state.liturgyEntered[selDate];if(!state.log)state.log={};if(!(selDate in state.log)){state.log[selDate]=(state.progress||0);state.progress=(state.progress||0)+1}save();renderHome();showOrdoEnd();return}vibrate(8);renderHome()}var nb=$('#liturgyBlock'+(i+1));if(nb)setTimeout(function(){nb.scrollIntoView({behavior:'smooth',block:'start'})},60)}var curEl=$('#liturgyBlock'+i);if(curEl){stopPacer();stopTimer();curEl.classList.add('closing');setTimeout(advance,260)}else{advance()}}});$$('#liturgyAccordion [data-back]').forEach(function(b){b.onclick=function(){var i=+b.dataset.back;var blk=$('#liturgyBlock'+(i-1));if(!blk)return;if(blk.hasAttribute('hidden')){$$('#liturgyAccordion .chapterReview').forEach(function(x){x.setAttribute('hidden','')});blk.removeAttribute('hidden');if(i-1!==1)wireFlow(FLOW[i-1])}blk.scrollIntoView({behavior:'smooth',block:'start'})}})}
 function wireReviewRows(){$$('#liturgyAccordion [data-row]').forEach(function(b){b.onclick=function(){var i=+b.dataset.row;var blk=$('#liturgyBlock'+i);if(!blk)return;var isHidden=blk.hasAttribute('hidden');$$('#liturgyAccordion .chapterReview').forEach(function(x){if(x!==blk)x.setAttribute('hidden','')});if(isHidden){blk.removeAttribute('hidden');if(i!==1)wireFlow(FLOW[i])}else{blk.setAttribute('hidden','');stopPacer();stopTimer()}}});$$('#liturgyAccordion [data-close]').forEach(function(b){b.onclick=function(){var i=+b.dataset.close;var blk=$('#liturgyBlock'+i);if(blk){blk.setAttribute('hidden','');stopPacer();stopTimer()}}})}
 function showOrdoEnd(){var el=$('#ordoEnd');if(!el)return;el.classList.add('show');vibrate(20)}
 (function(){var b=$('#ordoEndClose');if(b)b.onclick=function(){$('#ordoEnd').classList.remove('show');selDate=today();renderHome();window.scrollTo(0,0)}})();
@@ -240,15 +240,15 @@ function updatePageStatus(text,saved){var w=$('#pageWords');if(w)w.textContent=(
 
 const FLOW=[
 {kicker:'Presença',title:'Aquietar',line:'Um respiro para chegar à manhã.',type:'breath0'},
-{kicker:'Corpo',title:'Corpo',line:'Cama feita, rosto lavado, café e remédios. A ordem que devolve presença.',type:'text'},
+{kicker:'O Preparo',title:'O Preparo',line:'Cama feita, rosto lavado, café e remédios. A ordem que devolve presença.',type:'text'},
 {kicker:'A Palavra',title:'A Palavra',line:'Sua leitura de hoje, sem pressa.',type:'verse'},
-{kicker:'Devocional',title:'Devocional',line:'Deixe o texto do dia falar.',type:'devo'},
-{kicker:'Afirmação',title:'Afirmação',line:'Uma verdade para carregar hoje.',type:'aff'},
-{kicker:'Fé',title:'Declaração de fé',line:'A confissão de hoje, dita em voz alta.',type:'decl'},
-{kicker:'Oração',title:'Oração',line:'Silêncio, entrega, conversa honesta.',type:'timer'},
-{kicker:'Respiração',title:'Respiração',line:'Acompanhe o ritmo. Só respirar.',type:'breath'},
-{kicker:'Música',title:'Música',line:'Ouça com atenção.',type:'music'},
-{kicker:'A página',title:'A página',line:'Escreva uma página. Sem editar, sem julgar.',type:'journal'},
+{kicker:'O Devocional',title:'O Devocional',line:'Deixe o texto do dia falar.',type:'devo'},
+{kicker:'As Afirmações',title:'As Afirmações',line:'Uma verdade para carregar hoje.',type:'aff'},
+{kicker:'As Declarações de Fé',title:'As Declarações de Fé',line:'A confissão de hoje, dita em voz alta.',type:'decl'},
+{kicker:'A Oração',title:'A Oração',line:'Silêncio, entrega, conversa honesta.',type:'timer'},
+{kicker:'A Respiração',title:'A Respiração',line:'Acompanhe o ritmo. Só respirar.',type:'breath'},
+{kicker:'Uma Música',title:'Uma Música',line:'Ouça com atenção.',type:'music'},
+{kicker:'A Página',title:'A Página',line:'Escreva uma página. Sem editar, sem julgar.',type:'journal'},
 {kicker:'Ir em paz',title:'Ir em paz',line:'Sua manhã está completa. Até amanhã.',type:'end'}
 ];
 let pacer=null,ptimer=null,tSecs=0,tRun=false;
